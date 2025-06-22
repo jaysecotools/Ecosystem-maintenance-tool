@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Native Ecosystem Maintenance Tool | AHCECR301 Compliance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .sidebar {
+            min-height: 100vh;
+            background-color: #2c3e50;
+            color: white;
+        }
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 5px;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: #34495e;
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+        .main-content {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .map-container {
+            height: 400px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .species-card {
+            transition: transform 0.2s;
+        }
+        .species-card:hover {
+            transform: translateY(-5px);
+        }
+        .risk-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .risk-low {
+            background-color: #28a745;
+        }
+        .risk-medium {
+            background-color: #ffc107;
+        }
+        .risk-high {
+            background-color: #dc3545;
+        }
+        .logo {
+            font-weight: 700;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar p-0">
+                <div class="logo">EcoMaintain</div>
+                <ul class="nav flex-column p-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#site-assessment" data-bs-toggle="tab">
+                            <i class="bi bi-clipboard-data"></i> Site Assessment
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#maintenance-plan" data-bs-toggle="tab">
+                            <i class="bi bi-calendar-check"></i> Maintenance Plan
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#species-register" data-bs-toggle="tab">
+                            <i class="bi bi-tree"></i> Species Register
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#monitoring" data-bs-toggle="tab">
+                            <i class="bi bi-binoculars"></i> Monitoring
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reports" data-bs-toggle="tab">
+                            <i class="bi bi-file-earmark-text"></i> Reports
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#legislation" data-bs-toggle="tab">
+                            <i class="bi bi-journal-bookmark"></i> Legislation
+                        </a>
+                    </li>
+                    <li class="nav-item mt-4">
+                        <a class="nav-link" href="#settings" data-bs-toggle="tab">
+                            <i class="bi bi-gear"></i> Settings
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 ms-sm-auto main-content">
+                <div class="tab-content">
+                    <!-- Dashboard Tab -->
+                    <div class="tab-pane fade show active" id="dashboard">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Native Ecosystem Maintenance Dashboard</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <div class="btn-group me-2">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Print</button>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-success">
+                                    <i class="bi bi-plus"></i> New Activity
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Upcoming Tasks</h5>
+                                        <div class="list-group">
+                                            <a href="#" class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1">Weed Control - Area 3</h6>
+                                                    <small class="text-muted">Tomorrow</small>
+                                                </div>
+                                                <p class="mb-1">Target species: Blackberry</p>
+                                                <small class="text-muted">Assigned to: John Smith</small>
+                                            </a>
+                                            <a href="#" class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1">Fauna Survey</h6>
+                                                    <small class="text-muted">In 3 days</small>
+                                                </div>
+                                                <p class="mb-1">Eastern zone monitoring</p>
+                                                <small class="text-muted">Assigned to: Survey Team</small>
+                                            </a>
+                                            <a href="#" class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1">Revegetation Planting</h6>
+                                                    <small class="text-muted">Next week</small>
+                                                </div>
+                                                <p class="mb-1">200 native shrubs</p>
+                                                <small class="text-muted">Assigned to: Volunteer Group</small>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Site Health Indicators</h5>
+                                        <canvas id="healthChart" height="200"></canvas>
+                                        <div class="mt-3">
+                                            <span class="badge bg-success me-2">Biodiversity: 78%</span>
+                                            <span class="badge bg-warning me-2">Weed Cover: 22%</span>
+                                            <span class="badge bg-danger">Erosion: 15%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recent Observations</h5>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Koala sighting
+                                                <span class="badge bg-primary rounded-pill">Endangered</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                New weed infestation
+                                                <span class="badge bg-danger rounded-pill">High risk</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Successful nest
+                                                <span class="badge bg-success rounded-pill">Bush stone-curlew</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Erosion starting
+                                                <span class="badge bg-warning rounded-pill">Monitor</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Site Map</h5>
+                                        <div class="map-container p-3">
+                                            <!-- Map would be implemented with a library like Leaflet or Google Maps -->
+                                            <p class="text-center text-muted mt-5"><i class="bi bi-map" style="font-size: 3rem;"></i><br>Interactive map would display here</p>
+                                            <div class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary me-2">Zones</button>
+                                                <button class="btn btn-sm btn-outline-success me-2">Vegetation</button>
+                                                <button class="btn btn-sm btn-outline-danger">Weeds</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Compliance Checklist</h5>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="check1" checked>
+                                            <label class="form-check-label" for="check1">
+                                                Identified ecosystem components
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="check2" checked>
+                                            <label class="form-check-label" for="check2">
+                                                Assessed ecosystem health
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="check3">
+                                            <label class="form-check-label" for="check3">
+                                                Completed weed control plan
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="check4">
+                                            <label class="form-check-label" for="check4">
+                                                Recorded fauna observations
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="check5" checked>
+                                            <label class="form-check-label" for="check5">
+                                                Implemented erosion controls
+                                            </label>
+                                        </div>
+                                        <div class="progress mt-3">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60% Complete</div>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mt-3">Generate Compliance Report</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Site Assessment Tab -->
+                    <div class="tab-pane fade" id="site-assessment">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Site Assessment</h1>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">New Site Assessment</h5>
+                                <form>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="assessmentDate" class="form-label">Assessment Date</label>
+                                            <input type="date" class="form-control" id="assessmentDate">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="assessorName" class="form-label">Assessor Name</label>
+                                            <input type="text" class="form-control" id="assessorName">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="siteDescription" class="form-label">Site Description</label>
+                                        <textarea class="form-control" id="siteDescription" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Ecosystem Components Present</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="flora">
+                                                    <label class="form-check-label" for="flora">Flora</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="fauna">
+                                                    <label class="form-check-label" for="fauna">Fauna</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="soil">
+                                                    <label class="form-check-label" for="soil">Soil</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="water">
+                                                    <label class="form-check-label" for="water">Water</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="geology">
+                                                    <label class="form-check-label" for="geology">Geology</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="climate">
+                                                    <label class="form-check-label" for="climate">Climate</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="ecosystemHealth" class="form-label">Ecosystem Health Assessment</label>
+                                        <select class="form-select" id="ecosystemHealth">
+                                            <option selected>Select health rating...</option>
+                                            <option value="excellent">Excellent - Minimal disturbance</option>
+                                            <option value="good">Good - Some disturbance but recovering</option>
+                                            <option value="fair">Fair - Moderate disturbance</option>
+                                            <option value="poor">Poor - Significant disturbance</option>
+                                            <option value="degraded">Degraded - Severe disturbance</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="threats" class="form-label">Identified Threats</label>
+                                        <select class="form-select" id="threats" multiple>
+                                            <option value="weeds">Weeds</option>
+                                            <option value="pests">Pests</option>
+                                            <option value="erosion">Erosion</option>
+                                            <option value="fire">Fire</option>
+                                            <option value="climate">Climate change</option>
+                                            <option value="development">Development</option>
+                                            <option value="recreation">Recreational impacts</option>
+                                            <option value="grazing">Grazing</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="assessmentPhotos" class="form-label">Upload Photos</label>
+                                        <input class="form-control" type="file" id="assessmentPhotos" multiple accept="image/*">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Save Assessment</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Previous Assessments</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Assessor</th>
+                                                <th>Health Rating</th>
+                                                <th>Main Threats</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>15/06/2023</td>
+                                                <td>Jane Doe</td>
+                                                <td><span class="badge bg-success">Good</span></td>
+                                                <td>Weeds, Erosion</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">PDF</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>02/03/2023</td>
+                                                <td>John Smith</td>
+                                                <td><span class="badge bg-warning">Fair</span></td>
+                                                <td>Weeds, Pests</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">PDF</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>10/12/2022</td>
+                                                <td>Jane Doe</td>
+                                                <td><span class="badge bg-warning">Fair</span></td>
+                                                <td>Weeds, Erosion</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">PDF</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Maintenance Plan Tab -->
+                    <div class="tab-pane fade" id="maintenance-plan">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Maintenance Plan</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <button type="button" class="btn btn-sm btn-success">
+                                    <i class="bi bi-plus"></i> New Activity
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Maintenance Activities</h5>
+                                <ul class="nav nav-tabs" id="maintenanceTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button" role="tab">Upcoming</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">Completed</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="overdue-tab" data-bs-toggle="tab" data-bs-target="#overdue" type="button" role="tab">Overdue</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content p-3 border border-top-0 rounded-bottom">
+                                    <div class="tab-pane fade show active" id="upcoming" role="tabpanel">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Activity</th>
+                                                        <th>Type</th>
+                                                        <th>Scheduled</th>
+                                                        <th>Location</th>
+                                                        <th>Assigned To</th>
+                                                        <th>Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Weed Control - Blackberry</td>
+                                                        <td>Weed Management</td>
+                                                        <td>25/06/2023</td>
+                                                        <td>Zone 3</td>
+                                                        <td>John Smith</td>
+                                                        <td><span class="badge bg-info">Scheduled</span></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary">Details</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Fauna Survey - Eastern Zone</td>
+                                                        <td>Monitoring</td>
+                                                        <td>28/06/2023</td>
+                                                        <td>Eastern Zone</td>
+                                                        <td>Survey Team</td>
+                                                        <td><span class="badge bg-info">Scheduled</span></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary">Details</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Revegetation Planting</td>
+                                                        <td>Rehabilitation</td>
+                                                        <td>05/07/2023</td>
+                                                        <td>Zone 1</td>
+                                                        <td>Volunteer Group</td>
+                                                        <td><span class="badge bg-info">Scheduled</span></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary">Details</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="completed" role="tabpanel">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Activity</th>
+                                                        <th>Type</th>
+                                                        <th>Completed</th>
+                                                        <th>Location</th>
+                                                        <th>Assigned To</th>
+                                                        <th>Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Erosion Control - North Bank</td>
+                                                        <td>Erosion Control</td>
+                                                        <td>15/06/2023</td>
+                                                        <td>Northern Boundary</td>
+                                                        <td>Grounds Team</td>
+                                                        <td><span class="badge bg-success">Completed</span></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary">Details</button>
+                                                            <button class="btn btn-sm btn-outline-secondary">Report</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Weed Control - Lantana</td>
+                                                        <td>Weed Management</td>
+                                                        <td>10/06/2023</td>
+                                                        <td>Zone 2</td>
+                                                        <td>John Smith</td>
+                                                        <td><span class="badge bg-success">Completed</span></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary">Details</button>
+                                                            <button class="btn btn-sm btn-outline-secondary">Report</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="overdue" role="tabpanel">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Activity</th>
+                                                        <th>Type</th>
+                                                        <th>Due Date</th>
+                                                        <th>Location</th>
+                                                        <th>Assigned To</th>
+                                                        <th>Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Water Quality Testing</td>
+                                                        <td>Monitoring</td>
+                                                        <td>01/06/2023</td>
+                                                        <td>Main Creek</td>
+                                                        <td>Survey Team</td>
+                                                        <td><span class="badge bg-danger">Overdue</span></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary">Details</button>
+                                                            <button class="btn btn-sm btn-warning">Reschedule</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Maintenance Calendar</h5>
+                                <div id="calendar" style="height: 600px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Species Register Tab -->
+                    <div class="tab-pane fade" id="species-register">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Species Register</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <div class="btn-group me-2">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Print</button>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-success">
+                                    <i class="bi bi-plus"></i> New Species
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 species-card">
+                                    <img src="https://via.placeholder.com/300x200?text=Eucalyptus+pauciflora" class="card-img-top" alt="Species image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Eucalyptus pauciflora</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Snow Gum</h6>
+                                        <p class="card-text">
+                                            <span class="badge bg-success me-1">Native</span>
+                                            <span class="badge bg-info">Dominant</span>
+                                        </p>
+                                        <p class="card-text"><small>Last observed: 15/06/2023</small></p>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 species-card">
+                                    <img src="https://via.placeholder.com/300x200?text=Rubus+fruticosus" class="card-img-top" alt="Species image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Rubus fruticosus</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Blackberry</h6>
+                                        <p class="card-text">
+                                            <span class="badge bg-danger me-1">Weed</span>
+                                            <span class="badge bg-warning">High priority</span>
+                                        </p>
+                                        <p class="card-text"><small>Last observed: 10/06/2023</small></p>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 species-card">
+                                    <img src="https://via.placeholder.com/300x200?text=Phascolarctos+cinereus" class="card-img-top" alt="Species image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Phascolarctos cinereus</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Koala</h6>
+                                        <p class="card-text">
+                                            <span class="badge bg-success me-1">Native</span>
+                                            <span class="badge bg-danger">Endangered</span>
+                                        </p>
+                                        <p class="card-text"><small>Last observed: 05/06/2023</small></p>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Species List</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Scientific Name</th>
+                                                <th>Common Name</th>
+                                                <th>Type</th>
+                                                <th>Status</th>
+                                                <th>Last Observed</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Eucalyptus pauciflora</td>
+                                                <td>Snow Gum</td>
+                                                <td>Flora</td>
+                                                <td><span class="badge bg-success">Native</span></td>
+                                                <td>15/06/2023</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">Map</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Rubus fruticosus</td>
+                                                <td>Blackberry</td>
+                                                <td>Flora</td>
+                                                <td><span class="badge bg-danger">Weed</span></td>
+                                                <td>10/06/2023</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-warning">Control</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Phascolarctos cinereus</td>
+                                                <td>Koala</td>
+                                                <td>Fauna</td>
+                                                <td><span class="badge bg-danger">Endangered</span></td>
+                                                <td>05/06/2023</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-info">Monitor</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lantana camara</td>
+                                                <td>Lantana</td>
+                                                <td>Flora</td>
+                                                <td><span class="badge bg-danger">Weed</span></td>
+                                                <td>10/06/2023</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-warning">Control</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Burhinus grallarius</td>
+                                                <td>Bush Stone-curlew</td>
+                                                <td>Fauna</td>
+                                                <td><span class="badge bg-warning">Vulnerable</span></td>
+                                                <td>12/06/2023</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-info">Monitor</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monitoring Tab -->
+                    <div class="tab-pane fade" id="monitoring">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Monitoring</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <button type="button" class="btn btn-sm btn-success">
+                                    <i class="bi bi-plus"></i> New Monitoring
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Fauna Monitoring</h5>
+                                        <canvas id="faunaChart" height="200"></canvas>
+                                        <div class="mt-3">
+                                            <button class="btn btn-sm btn-outline-primary me-2">Add Sighting</button>
+                                            <button class="btn btn-sm btn-outline-secondary">View All</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Vegetation Monitoring</h5>
+                                        <canvas id="vegetationChart" height="200"></canvas>
+                                        <div class="mt-3">
+                                            <button class="btn btn-sm btn-outline-primary me-2">Add Survey</button>
+                                            <button class="btn btn-sm btn-outline-secondary">View All</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Recent Monitoring Activities</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Type</th>
+                                                <th>Location</th>
+                                                <th>Observer</th>
+                                                <th>Findings</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>15/06/2023</td>
+                                                <td>Vegetation Survey</td>
+                                                <td>Zone 1</td>
+                                                <td>Jane Doe</td>
+                                                <td>Increased native cover</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">Report</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>12/06/2023</td>
+                                                <td>Fauna Survey</td>
+                                                <td>Eastern Zone</td>
+                                                <td>Survey Team</td>
+                                                <td>Koala sighting</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">Report</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>10/06/2023</td>
+                                                <td>Water Quality</td>
+                                                <td>Main Creek</td>
+                                                <td>John Smith</td>
+                                                <td>Good quality</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">Report</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>05/06/2023</td>
+                                                <td>Weed Mapping</td>
+                                                <td>Zone 3</td>
+                                                <td>Grounds Team</td>
+                                                <td>Blackberry expansion</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-warning">Control</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Tab -->
+                    <div class="tab-pane fade" id="reports">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Reports</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <button type="button" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-file-earmark-plus"></i> Generate Report
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Compliance Report</h5>
+                                        <p class="card-text">Generate a report showing compliance with AHCECR301 requirements.</p>
+                                        <a href="#" class="btn btn-primary">Generate</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Maintenance Summary</h5>
+                                        <p class="card-text">Summary of all maintenance activities for a selected period.</p>
+                                        <a href="#" class="btn btn-primary">Generate</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Monitoring Summary</h5>
+                                        <p class="card-text">Summary of monitoring activities and findings.</p>
+                                        <a href="#" class="btn btn-primary">Generate</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Ecosystem Health Trend</h5>
+                                        <p class="card-text">Generate a trend report showing changes in ecosystem health over time.</p>
+                                        <a href="#" class="btn btn-primary">Generate</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Threat Management</h5>
+                                        <p class="card-text">Report on threats and management actions taken.</p>
+                                        <a href="#" class="btn btn-primary">Generate</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Previous Reports</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Report Type</th>
+                                                <th>Generated By</th>
+                                                <th>Period</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>01/06/2023</td>
+                                                <td>Monthly Maintenance</td>
+                                                <td>Jane Doe</td>
+                                                <td>May 2023</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">PDF</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>01/05/2023</td>
+                                                <td>Monthly Maintenance</td>
+                                                <td>Jane Doe</td>
+                                                <td>April 2023</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">PDF</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>15/04/2023</td>
+                                                <td>Ecosystem Health</td>
+                                                <td>John Smith</td>
+                                                <td>Q1 2023</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">PDF</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>01/04/2023</td>
+                                                <td>Monthly Maintenance</td>
+                                                <td>Jane Doe</td>
+                                                <td>March 2023</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                                    <button class="btn btn-sm btn-outline-secondary">PDF</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Legislation Tab -->
+                    <div class="tab-pane fade" id="legislation">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Legislation & Compliance</h1>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Relevant Legislation</h5>
+                                <div class="accordion" id="legislationAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                                Environment Protection and Biodiversity Conservation Act 1999 (EPBC Act)
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#legislationAccordion">
+                                            <div class="accordion-body">
+                                                <p>The EPBC Act is the Australian Government's central piece of environmental legislation. It provides a legal framework to protect and manage nationally and internationally important flora, fauna, ecological communities and heritage places.</p>
+                                                <p><strong>Key requirements:</strong></p>
+                                                <ul>
+                                                    <li>Identification and protection of threatened species and ecological communities</li>
+                                                    <li>Regulation of actions that may impact matters of national environmental significance</li>
+                                                    <li>Promotion of ecologically sustainable development</li>
+                                                </ul>
+                                                <a href="https://www.environment.gov.au/epbc" target="_blank" class="btn btn-sm btn-outline-primary">More Information</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                                State/Territory Environmental Legislation
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#legislationAccordion">
+                                            <div class="accordion-body">
+                                                <p>Each state and territory has its own environmental protection and biodiversity conservation legislation that operates alongside the EPBC Act.</p>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Jurisdiction</th>
+                                                                <th>Primary Legislation</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>NSW</td>
+                                                                <td>Biodiversity Conservation Act 2016</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>VIC</td>
+                                                                <td>Flora and Fauna Guarantee Act 1988</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>QLD</td>
+                                                                <td>Nature Conservation Act 1992</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>WA</td>
+                                                                <td>Biodiversity Conservation Act 2016</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>SA</td>
+                                                                <td>National Parks and Wildlife Act 1972</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>TAS</td>
+                                                                <td>Nature Conservation Act 2002</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>ACT</td>
+                                                                <td>Nature Conservation Act 2014</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>NT</td>
+                                                                <td>Territory Parks and Wildlife Conservation Act 2000</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                                Local Government Regulations
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#legislationAccordion">
+                                            <div class="accordion-body">
+                                                <p>Local governments often have additional planning schemes, local laws and policies that affect native ecosystem management.</p>
+                                                <p><strong>Common local regulations include:</strong></p>
+                                                <ul>
+                                                    <li>Tree preservation orders</li>
+                                                    <li>Vegetation clearing controls</li>
+                                                    <li>Weed control requirements</li>
+                                                    <li>Bushfire management provisions</li>
+                                                </ul>
+                                                <p>Check with your local council for specific requirements in your area.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Compliance Checklist</h5>
+                                <p>This checklist helps ensure your activities comply with relevant legislation and the requirements of AHCECR301.</p>
+                                
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Requirement</th>
+                                                <th>Compliant?</th>
+                                                <th>Evidence</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Identified all relevant legislation</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm">
+                                                        <option>Yes</option>
+                                                        <option>No</option>
+                                                        <option>Partial</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm" placeholder="Document reference">
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">Add Note</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Assessed impacts on protected matters</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm">
+                                                        <option>Yes</option>
+                                                        <option selected>No</option>
+                                                        <option>Partial</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm" placeholder="Document reference">
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">Add Note</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Obtained necessary permits/approvals</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm">
+                                                        <option>Yes</option>
+                                                        <option selected>No</option>
+                                                        <option>Partial</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm" placeholder="Document reference">
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">Add Note</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Implemented required protections</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm">
+                                                        <option>Yes</option>
+                                                        <option selected>No</option>
+                                                        <option>Partial</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm" placeholder="Document reference">
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">Add Note</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Maintained required records</td>
+                                                <td>
+                                                    <select class="form-select form-select-sm">
+                                                        <option>Yes</option>
+                                                        <option selected>No</option>
+                                                        <option>Partial</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm" placeholder="Document reference">
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">Add Note</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button class="btn btn-primary mt-3">Save Compliance Checklist</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div class="tab-pane fade" id="settings">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Settings</h1>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">User Profile</h5>
+                                        <form>
+                                            <div class="mb-3">
+                                                <label for="userName" class="form-label">Full Name</label>
+                                                <input type="text" class="form-control" id="userName" value="John Doe">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="userEmail" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="userEmail" value="john.doe@example.com">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="userRole" class="form-label">Role</label>
+                                                <select class="form-select" id="userRole">
+                                                    <option>Administrator</option>
+                                                    <option selected>Ecologist</option>
+                                                    <option>Field Technician</option>
+                                                    <option>Volunteer</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="card mt-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Change Password</h5>
+                                        <form>
+                                            <div class="mb-3">
+                                                <label for="currentPassword" class="form-label">Current Password</label>
+                                                <input type="password" class="form-control" id="currentPassword">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="newPassword" class="form-label">New Password</label>
+                                                <input type="password" class="form-control" id="newPassword">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                                <input type="password" class="form-control" id="confirmPassword">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Change Password</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Site Settings</h5>
+                                        <form>
+                                            <div class="mb-3">
+                                                <label for="siteName" class="form-label">Site Name</label>
+                                                <input type="text" class="form-control" id="siteName" value="Blue Mountains Conservation Area">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="siteLocation" class="form-label">Location</label>
+                                                <input type="text" class="form-control" id="siteLocation" value="NSW, Australia">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="siteArea" class="form-label">Area (hectares)</label>
+                                                <input type="number" class="form-control" id="siteArea" value="125">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="siteDescription" class="form-label">Description</label>
+                                                <textarea class="form-control" id="siteDescription" rows="3">Mixed eucalypt forest with significant biodiversity values including several threatened species.</textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Update Site Details</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="card mt-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Data Management</h5>
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-outline-secondary">Export All Data</button>
+                                            <button class="btn btn-outline-secondary">Backup Database</button>
+                                            <button class="btn btn-outline-danger">Reset Test Data</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Health Indicators Chart
+            const healthCtx = document.getElementById('healthChart').getContext('2d');
+            const healthChart = new Chart(healthCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Biodiversity', 'Native Cover', 'Weed Cover', 'Erosion', 'Fauna', 'Water Quality'],
+                    datasets: [{
+                        label: 'Current',
+                        data: [78, 65, 22, 15, 70, 85],
+                        backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                        borderColor: 'rgba(40, 167, 69, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Previous',
+                        data: [72, 60, 28, 18, 65, 80],
+                        backgroundColor: 'rgba(108, 117, 125, 0.2)',
+                        borderColor: 'rgba(108, 117, 125, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+
+            // Fauna Monitoring Chart
+            const faunaCtx = document.getElementById('faunaChart').getContext('2d');
+            const faunaChart = new Chart(faunaCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Koala',
+                        data: [2, 3, 1, 4, 3, 2],
+                        borderColor: 'rgba(220, 53, 69, 1)',
+                        backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                        tension: 0.1,
+                        fill: true
+                    }, {
+                        label: 'Bush Stone-curlew',
+                        data: [5, 4, 6, 3, 5, 7],
+                        borderColor: 'rgba(255, 193, 7, 1)',
+                        backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Threatened Species Sightings'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Vegetation Monitoring Chart
+            const vegetationCtx = document.getElementById('vegetationChart').getContext('2d');
+            const vegetationChart = new Chart(vegetationCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Zone 1', 'Zone 2', 'Zone 3', 'Zone 4'],
+                    datasets: [{
+                        label: 'Native Cover (%)',
+                        data: [75, 60, 45, 80],
+                        backgroundColor: 'rgba(40, 167, 69, 0.7)',
+                    }, {
+                        label: 'Weed Cover (%)',
+                        data: [15, 25, 40, 10],
+                        backgroundColor: 'rgba(220, 53, 69, 0.7)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Vegetation Cover by Zone'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
