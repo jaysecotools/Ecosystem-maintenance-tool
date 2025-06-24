@@ -1287,337 +1287,233 @@
         </div>
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""></script>
-<script>
-    // Global data structure
-    const appData = {
-        assessments: JSON.parse(localStorage.getItem('assessments')) || [],
-        maintenanceActivities: JSON.parse(localStorage.getItem('maintenanceActivities')) || [],
-        species: JSON.parse(localStorage.getItem('species')) || [],
-        monitoring: JSON.parse(localStorage.getItem('monitoring')) || [],
-        reports: JSON.parse(localStorage.getItem('reports')) || []
-    };
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <script>
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Health Indicators Chart
+            const healthCtx = document.getElementById('healthChart').getContext('2d');
+            const healthChart = new Chart(healthCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Biodiversity', 'Native Cover', 'Weed Cover', 'Erosion', 'Fauna', 'Water Quality'],
+                    datasets: [{
+                        label: 'Current',
+                        data: [78, 65, 22, 15, 70, 85],
+                        backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                        borderColor: 'rgba(40, 167, 69, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Previous',
+                        data: [72, 60, 28, 18, 65, 80],
+                        backgroundColor: 'rgba(108, 117, 125, 0.2)',
+                        borderColor: 'rgba(108, 117, 125, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
 
-    // Save data to localStorage
-    function saveData() {
-        localStorage.setItem('assessments', JSON.stringify(appData.assessments));
-        localStorage.setItem('maintenanceActivities', JSON.stringify(appData.maintenanceActivities));
-        localStorage.setItem('species', JSON.stringify(appData.species));
-        localStorage.setItem('monitoring', JSON.stringify(appData.monitoring));
-        localStorage.setItem('reports', JSON.stringify(appData.reports));
-    }
+            // Fauna Monitoring Chart
+            const faunaCtx = document.getElementById('faunaChart').getContext('2d');
+            const faunaChart = new Chart(faunaCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Koala',
+                        data: [2, 3, 1, 4, 3, 2],
+                        borderColor: 'rgba(220, 53, 69, 1)',
+                        backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                        tension: 0.1,
+                        fill: true
+                    }, {
+                        label: 'Bush Stone-curlew',
+                        data: [5, 4, 6, 3, 5, 7],
+                        borderColor: 'rgba(255, 193, 7, 1)',
+                        backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Threatened Species Sightings'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
 
-    // ======================
-    // SITE ASSESSMENT TAB
-    // ======================
-    document.querySelector('#site-assessment form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const assessment = {
-            id: Date.now(),
-            date: document.getElementById('assessmentDate').value,
-            assessor: document.getElementById('assessorName').value,
-            description: document.getElementById('siteDescription').value,
-            components: {
-                flora: document.getElementById('flora').checked,
-                fauna: document.getElementById('fauna').checked,
-                soil: document.getElementById('soil').checked,
-                water: document.getElementById('water').checked,
-                geology: document.getElementById('geology').checked,
-                climate: document.getElementById('climate').checked
-            },
-            health: document.getElementById('ecosystemHealth').value,
-            threats: Array.from(document.getElementById('threats').selectedOptions).map(o => o.value),
-            photos: [], // Would need file handling for real implementation
-            timestamp: new Date().toISOString()
-        };
-        
-        appData.assessments.push(assessment);
-        saveData();
-        updateAssessmentsTable();
-        alert('Assessment saved successfully!');
-        this.reset();
-    });
+            // Vegetation Monitoring Chart
+            const vegetationCtx = document.getElementById('vegetationChart').getContext('2d');
+            const vegetationChart = new Chart(vegetationCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Zone 1', 'Zone 2', 'Zone 3', 'Zone 4'],
+                    datasets: [{
+                        label: 'Native Cover (%)',
+                        data: [75, 60, 45, 80],
+                        backgroundColor: 'rgba(40, 167, 69, 0.7)',
+                    }, {
+                        label: 'Weed Cover (%)',
+                        data: [15, 25, 40, 10],
+                        backgroundColor: 'rgba(220, 53, 69, 0.7)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Vegetation Cover by Zone'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
 
-    function updateAssessmentsTable() {
-        const tbody = document.querySelector('#site-assessment table tbody');
-        tbody.innerHTML = '';
-        
-        appData.assessments.forEach(assess => {
-            const healthBadgeClass = {
-                'excellent': 'bg-success',
-                'good': 'bg-primary',
-                'fair': 'bg-warning',
-                'poor': 'bg-danger',
-                'degraded': 'bg-dark'
-            }[assess.health] || 'bg-secondary';
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${new Date(assess.date).toLocaleDateString()}</td>
-                <td>${assess.assessor}</td>
-                <td><span class="badge ${healthBadgeClass}">${assess.health.charAt(0).toUpperCase() + assess.health.slice(1)}</span></td>
-                <td>${assess.threats.join(', ')}</td>
-                <td>
-                    <button class="btn btn-sm btn-outline-primary view-assessment" data-id="${assess.id}">View</button>
-                    <button class="btn btn-sm btn-outline-secondary">PDF</button>
-                </td>
-            `;
-            tbody.appendChild(row);
+            // Initialize the map
+            const map = L.map('map').setView([-41.0558, 145.9038], 14); // Burnie, Tasmania coordinates and zoom level
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Add a marker for the default location
+            const marker = L.marker([-41.0558, 145.9038]).addTo(map)
+                .bindPopup('Burnie, Tasmania')
+                .openPopup();
+
+            // Add some sample zones (polygons)
+            const zone1 = L.polygon([
+                [-41.05, 145.90],
+                [-41.05, 145.91],
+                [-41.06, 145.91],
+                [-41.06, 145.90]
+            ], {color: 'blue', fillOpacity: 0.2}).addTo(map).bindPopup('Zone 1 - Native Forest');
+
+            const zone2 = L.polygon([
+                [-41.04, 145.905],
+                [-41.04, 145.915],
+                [-41.05, 145.915],
+                [-41.05, 145.905]
+            ], {color: 'green', fillOpacity: 0.2}).addTo(map).bindPopup('Zone 2 - Wetland Area');
+
+            const zone3 = L.polygon([
+                [-41.06, 145.895],
+                [-41.06, 145.905],
+                [-41.07, 145.905],
+                [-41.07, 145.895]
+            ], {color: 'red', fillOpacity: 0.2}).addTo(map).bindPopup('Zone 3 - Weed Control Area');
+
+            // Create layer groups for different map features
+            const zonesLayer = L.layerGroup([zone1, zone2, zone3]);
+            const vegetationLayer = L.layerGroup();
+            const weedsLayer = L.layerGroup();
+
+            // Add some sample vegetation points
+            L.marker([-41.055, 145.902]).addTo(vegetationLayer)
+                .bindPopup('Eucalyptus pauciflora (Snow Gum)');
+            L.marker([-41.054, 145.904]).addTo(vegetationLayer)
+                .bindPopup('Acacia melanoxylon (Blackwood)');
+            L.marker([-41.056, 145.901]).addTo(vegetationLayer)
+                .bindPopup('Banksia marginata (Silver Banksia)');
+
+            // Add some sample weed points
+            L.marker([-41.065, 145.901]).addTo(weedsLayer)
+                .bindPopup('Rubus fruticosus (Blackberry)');
+            L.marker([-41.064, 145.903]).addTo(weedsLayer)
+                .bindPopup('Lantana camara (Lantana)');
+            L.marker([-41.066, 145.902]).addTo(weedsLayer)
+                .bindPopup('Ulex europaeus (Gorse)');
+
+            // Add layer control
+            const baseLayers = {
+                "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }),
+                "Satellite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                })
+            };
+
+            const overlays = {
+                "Zones": zonesLayer,
+                "Vegetation": vegetationLayer,
+                "Weeds": weedsLayer
+            };
+
+            L.control.layers(baseLayers, overlays, {collapsed: false}).addTo(map);
+
+            // Default to showing zones
+            zonesLayer.addTo(map);
+
+            // Button controls for map layers
+            document.getElementById('zoneToggle').addEventListener('click', function() {
+                if (map.hasLayer(zonesLayer)) {
+                    map.removeLayer(zonesLayer);
+                    this.classList.remove('active');
+                } else {
+                    map.addLayer(zonesLayer);
+                    this.classList.add('active');
+                }
+            });
+
+            document.getElementById('vegetationToggle').addEventListener('click', function() {
+                if (map.hasLayer(vegetationLayer)) {
+                    map.removeLayer(vegetationLayer);
+                    this.classList.remove('active');
+                } else {
+                    map.addLayer(vegetationLayer);
+                    this.classList.add('active');
+                }
+            });
+
+            document.getElementById('weedsToggle').addEventListener('click', function() {
+                if (map.hasLayer(weedsLayer)) {
+                    map.removeLayer(weedsLayer);
+                    this.classList.remove('active');
+                } else {
+                    map.addLayer(weedsLayer);
+                    this.classList.add('active');
+                }
+            });
         });
-    }
-
-    // ======================
-    // MAINTENANCE PLAN TAB
-    // ======================
-    document.querySelector('#maintenance-plan .btn-success').addEventListener('click', function() {
-        // This would open a modal/form for new activity in a real implementation
-        const newActivity = {
-            id: Date.now(),
-            name: "New Maintenance Activity",
-            type: "maintenance",
-            scheduledDate: new Date().toISOString(),
-            location: "Zone 1",
-            assignedTo: "Team",
-            status: "scheduled",
-            description: "Activity description"
-        };
-        
-        appData.maintenanceActivities.push(newActivity);
-        saveData();
-        updateMaintenanceTables();
-        alert('New activity added!');
-    });
-
-    function updateMaintenanceTables() {
-        const upcomingTbody = document.querySelector('#upcoming tbody');
-        const completedTbody = document.querySelector('#completed tbody');
-        const overdueTbody = document.querySelector('#overdue tbody');
-        
-        upcomingTbody.innerHTML = '';
-        completedTbody.innerHTML = '';
-        overdueTbody.innerHTML = '';
-        
-        appData.maintenanceActivities.forEach(activity => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${activity.name}</td>
-                <td>${activity.type}</td>
-                <td>${new Date(activity.scheduledDate).toLocaleDateString()}</td>
-                <td>${activity.location}</td>
-                <td>${activity.assignedTo}</td>
-                <td><span class="badge ${getStatusBadgeClass(activity.status)}">${activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}</span></td>
-                <td>
-                    <button class="btn btn-sm btn-outline-primary">Details</button>
-                </td>
-            `;
-            
-            if (activity.status === 'completed') {
-                completedTbody.appendChild(row);
-            } else if (new Date(activity.scheduledDate) < new Date()) {
-                overdueTbody.appendChild(row);
-            } else {
-                upcomingTbody.appendChild(row);
-            }
-        });
-    }
-
-    function getStatusBadgeClass(status) {
-        return {
-            'scheduled': 'bg-info',
-            'in-progress': 'bg-primary',
-            'completed': 'bg-success',
-            'overdue': 'bg-danger'
-        }[status] || 'bg-secondary';
-    }
-
-    // ======================
-    // SPECIES REGISTER TAB
-    // ======================
-    document.querySelector('#species-register .btn-success').addEventListener('click', function() {
-        // This would open a modal/form for new species in a real implementation
-        const newSpecies = {
-            id: Date.now(),
-            scientificName: "New Species",
-            commonName: "Common Name",
-            type: "flora",
-            status: "native",
-            lastObserved: new Date().toISOString(),
-            description: "Species description"
-        };
-        
-        appData.species.push(newSpecies);
-        saveData();
-        updateSpeciesDisplay();
-        alert('New species added!');
-    });
-
-    function updateSpeciesDisplay() {
-        // Update cards
-        const speciesCardsContainer = document.querySelector('#species-register .row');
-        speciesCardsContainer.innerHTML = '';
-        
-        // Update table
-        const speciesTbody = document.querySelector('#species-register table tbody');
-        speciesTbody.innerHTML = '';
-        
-        appData.species.forEach(species => {
-            // Add to cards (first 3 only for demo)
-            if (appData.species.indexOf(species) < 3) {
-                const statusBadgeClass = species.status === 'native' ? 'bg-success' : 'bg-danger';
-                const cardCol = document.createElement('div');
-                cardCol.className = 'col-md-4 mb-4';
-                cardCol.innerHTML = `
-                    <div class="card h-100 species-card">
-                        <img src="https://via.placeholder.com/300x200?text=${encodeURIComponent(species.scientificName)}" class="card-img-top" alt="Species image">
-                        <div class="card-body">
-                            <h5 class="card-title">${species.scientificName}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">${species.commonName}</h6>
-                            <p class="card-text">
-                                <span class="badge ${statusBadgeClass} me-1">${species.status}</span>
-                            </p>
-                            <p class="card-text"><small>Last observed: ${new Date(species.lastObserved).toLocaleDateString()}</small></p>
-                            <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
-                        </div>
-                    </div>
-                `;
-                speciesCardsContainer.appendChild(cardCol);
-            }
-            
-            // Add to table
-            const statusBadgeClass = {
-                'native': 'bg-success',
-                'weed': 'bg-danger',
-                'endangered': 'bg-danger',
-                'vulnerable': 'bg-warning'
-            }[species.status] || 'bg-secondary';
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${species.scientificName}</td>
-                <td>${species.commonName}</td>
-                <td>${species.type.charAt(0).toUpperCase() + species.type.slice(1)}</td>
-                <td><span class="badge ${statusBadgeClass}">${species.status.charAt(0).toUpperCase() + species.status.slice(1)}</span></td>
-                <td>${new Date(species.lastObserved).toLocaleDateString()}</td>
-                <td>
-                    <button class="btn btn-sm btn-outline-primary">View</button>
-                    ${species.status === 'weed' ? '<button class="btn btn-sm btn-outline-warning">Control</button>' : '<button class="btn btn-sm btn-outline-info">Monitor</button>'}
-                </td>
-            `;
-            speciesTbody.appendChild(row);
-        });
-    }
-
-    // ======================
-    // MONITORING TAB
-    // ======================
-    document.querySelector('#monitoring .btn-success').addEventListener('click', function() {
-        // This would open a modal/form for new monitoring in a real implementation
-        const newMonitoring = {
-            id: Date.now(),
-            date: new Date().toISOString(),
-            type: "fauna",
-            location: "Zone 1",
-            observer: "Observer Name",
-            findings: "Monitoring findings",
-            species: []
-        };
-        
-        appData.monitoring.push(newMonitoring);
-        saveData();
-        updateMonitoringDisplay();
-        alert('New monitoring record added!');
-    });
-
-    function updateMonitoringDisplay() {
-        const monitoringTbody = document.querySelector('#monitoring table tbody');
-        monitoringTbody.innerHTML = '';
-        
-        appData.monitoring.forEach(record => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${new Date(record.date).toLocaleDateString()}</td>
-                <td>${record.type.charAt(0).toUpperCase() + record.type.slice(1)} Survey</td>
-                <td>${record.location}</td>
-                <td>${record.observer}</td>
-                <td>${record.findings}</td>
-                <td>
-                    <button class="btn btn-sm btn-outline-primary">View</button>
-                    <button class="btn btn-sm btn-outline-secondary">Report</button>
-                </td>
-            `;
-            monitoringTbody.appendChild(row);
-        });
-    }
-
-    // ======================
-    // REPORTS TAB
-    // ======================
-    document.querySelector('#reports .btn-primary').addEventListener('click', function() {
-        // This would open a report generator in a real implementation
-        const newReport = {
-            id: Date.now(),
-            date: new Date().toISOString(),
-            type: "custom",
-            generatedBy: "User",
-            period: "Custom",
-            content: "Report content"
-        };
-        
-        appData.reports.push(newReport);
-        saveData();
-        updateReportsDisplay();
-        alert('New report generated!');
-    });
-
-    function updateReportsDisplay() {
-        const reportsTbody = document.querySelector('#reports table tbody');
-        reportsTbody.innerHTML = '';
-        
-        appData.reports.forEach(report => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${new Date(report.date).toLocaleDateString()}</td>
-                <td>${report.type.charAt(0).toUpperCase() + report.type.split('-').join(' ')}</td>
-                <td>${report.generatedBy}</td>
-                <td>${report.period}</td>
-                <td>
-                    <button class="btn btn-sm btn-outline-primary">View</button>
-                    <button class="btn btn-sm btn-outline-secondary">PDF</button>
-                </td>
-            `;
-            reportsTbody.appendChild(row);
-        });
-    }
-
-    // ======================
-    // INITIALIZE ALL DATA
-    // ======================
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize charts and map (keep your existing code here)
-        const healthCtx = document.getElementById('healthChart').getContext('2d');
-        const healthChart = new Chart(healthCtx, {
-            // ... keep your existing chart initialization code ...
-        });
-
-        // Initialize the map (keep your existing Leaflet code)
-        const map = L.map('map').setView([-41.0558, 145.9038], 14);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // Initialize all data displays
-        updateAssessmentsTable();
-        updateMaintenanceTables();
-        updateSpeciesDisplay();
-        updateMonitoringDisplay();
-        updateReportsDisplay();
-    });
-</script>
+    </script>
 </body>
 </html>
