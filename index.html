@@ -1296,6 +1296,51 @@
     <script>
         // Initialize charts
         document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('#site-assessment form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  // Get form data
+  const assessment = {
+    date: document.getElementById('assessmentDate').value,
+    assessor: document.getElementById('assessorName').value,
+    description: document.getElementById('siteDescription').value,
+    health: document.getElementById('ecosystemHealth').value,
+    threats: Array.from(document.getElementById('threats').selectedOptions).map(o => o.value),
+    timestamp: new Date().toISOString()
+  };
+  
+  // Save to localStorage
+  const assessments = JSON.parse(localStorage.getItem('assessments') || '[]');
+  assessments.push(assessment);
+  localStorage.setItem('assessments', JSON.stringify(assessments));
+  
+  // Update the table
+  updateAssessmentsTable();
+  
+  // Show confirmation
+  alert('Assessment saved successfully!');
+});
+
+function updateAssessmentsTable() {
+  const assessments = JSON.parse(localStorage.getItem('assessments') || '[]');
+  const tbody = document.querySelector('#site-assessment table tbody');
+  tbody.innerHTML = '';
+  
+  assessments.forEach(assess => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${new Date(assess.date).toLocaleDateString()}</td>
+      <td>${assess.assessor}</td>
+      <td><span class="badge bg-success">${assess.health}</span></td>
+      <td>${assess.threats.join(', ')}</td>
+      <td>
+        <button class="btn btn-sm btn-outline-primary">View</button>
+        <button class="btn btn-sm btn-outline-secondary">PDF</button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+}
             // Health Indicators Chart
             const healthCtx = document.getElementById('healthChart').getContext('2d');
             const healthChart = new Chart(healthCtx, {
